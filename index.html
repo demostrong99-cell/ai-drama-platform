@@ -18,7 +18,9 @@
       <ul class="nav-links">
         <li><a href="#features">功能</a></li>
         <li><a href="#workflow">流程</a></li>
-        <li><a href="#demo">演示</a></li>
+        <li><a href="#demo">剧本</a></li>
+        <li><a href="#character">角色</a></li>
+        <li><a href="#storyboard">分镜</a></li>
         <li><a href="#about">关于</a></li>
       </ul>
       <a href="#demo" class="btn btn-primary btn-nav">开始创作</a>
@@ -177,6 +179,86 @@
           <div class="output-actions" id="outputActions" style="display:none;">
             <button class="btn btn-outline" onclick="copyScript()">📋 复制剧本</button>
             <button class="btn btn-outline" onclick="downloadScript()">💾 下载剧本</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Character Design Section -->
+  <section class="section section-alt" id="character">
+    <div class="container">
+      <h2 class="section-title">AI 角色设计</h2>
+      <p class="section-subtitle">输入角色信息，AI 自动生成详细角色档案</p>
+      <div class="demo-container">
+        <div class="demo-input">
+          <h3>👤 角色信息</h3>
+          <div class="form-group">
+            <label for="charName">角色姓名</label>
+            <input type="text" id="charName" placeholder="例如：林浩">
+          </div>
+          <div class="form-group">
+            <label for="charRole">角色定位</label>
+            <select id="charRole">
+              <option value="protagonist">主角</option>
+              <option value="antagonist">反派</option>
+              <option value="supporting">配角</option>
+              <option value="mentor">导师型</option>
+              <option value="comic">喜剧担当</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="charGenre">故事类型</label>
+            <select id="charGenre">
+              <option value="modern">现代都市</option>
+              <option value="ancient">古装</option>
+              <option value="scifi">科幻未来</option>
+              <option value="fantasy">奇幻魔法</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="charDesc">简要描述</label>
+            <textarea id="charDesc" rows="3" placeholder="例如：28岁，快递员，性格内向但善良，意外获得超能力..."></textarea>
+          </div>
+          <button class="btn btn-primary btn-full" onclick="generateCharacter()">
+            ✨ AI 生成角色档案
+          </button>
+        </div>
+        <div class="demo-output">
+          <h3>📋 角色档案</h3>
+          <div class="output-content" id="charOutput">
+            <div class="placeholder">
+              <p>👈 输入角色信息</p>
+              <p>AI 将生成完整角色档案</p>
+            </div>
+          </div>
+          <div class="output-actions" id="charActions" style="display:none;">
+            <button class="btn btn-outline" onclick="copyCharOutput()">📋 复制</button>
+            <button class="btn btn-outline" onclick="downloadCharOutput()">💾 下载</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Storyboard Section -->
+  <section class="section" id="storyboard">
+    <div class="container">
+      <h2 class="section-title">AI 分镜脚本</h2>
+      <p class="section-subtitle">一键将剧本转化为专业分镜脚本</p>
+      <div class="storyboard-demo">
+        <div class="storyboard-input">
+          <h3>🎬 输入场景描述</h3>
+          <div class="form-group">
+            <textarea id="storyboardInput" rows="4" placeholder="例如：深夜，主角独自走在昏暗的小巷里，路灯忽明忽暗。他停下脚步，回头看了一眼..."></textarea>
+          </div>
+          <button class="btn btn-primary btn-full" onclick="generateStoryboard()">
+            ✨ AI 生成分镜
+          </button>
+        </div>
+        <div class="storyboard-output" id="storyboardOutput">
+          <div class="storyboard-placeholder">
+            <p>输入场景描述，AI 自动生成专业分镜脚本</p>
           </div>
         </div>
       </div>

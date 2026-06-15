@@ -260,6 +260,150 @@ function downloadScript() {
   URL.revokeObjectURL(url);
 }
 
+// ===== 角色设计生成 =====
+function generateCharacter() {
+  const name = document.getElementById('charName').value || '主角';
+  const role = document.getElementById('charRole').value;
+  const genre = document.getElementById('charGenre').value;
+  const desc = document.getElementById('charDesc').value;
+  const output = document.getElementById('charOutput');
+  const actions = document.getElementById('charActions');
+
+  output.innerHTML = '<div class="placeholder"><p>🤖 AI 正在设计角色...</p></div>';
+
+  setTimeout(() => {
+    const roleNames = {
+      protagonist: '主角', antagonist: '反派', supporting: '配角',
+      mentor: '导师型', comic: '喜剧担当'
+    };
+    const genreNames = {
+      modern: '现代都市', ancient: '古装', scifi: '科幻未来', fantasy: '奇幻魔法'
+    };
+
+    const ages = ['22', '25', '28', '30', '35', '40'];
+    const age = ages[Math.floor(Math.random() * ages.length)];
+
+    const personalities = {
+      protagonist: ['坚韧不拔', '内心善良', '有正义感', '偶尔迷茫但总能找到方向'],
+      antagonist: ['聪明绝顶', '野心勃勃', '手段高明', '内心有不为人知的伤痛'],
+      supporting: ['忠诚可靠', '幽默风趣', '关键时刻总能出现', '默默支持主角'],
+      mentor: ['智慧深沉', '经验丰富', '外表严厉内心温暖', '有不为人知的过去'],
+      comic: ['乐观开朗', '话多但心善', '经常闯祸但运气好', '是团队的开心果']
+    };
+
+    const skills = {
+      modern: ['数据分析', '沟通谈判', '应急处理', '人际关系'],
+      ancient: ['武功高强', '医术精湛', '琴棋书画', '谋略过人'],
+      scifi: ['编程技术', '机械维修', '战术分析', '生存技能'],
+      fantasy: ['魔法天赋', '元素掌控', '治愈能力', '预知未来']
+    };
+
+    const backgrounds = {
+      modern: '出生在普通家庭，通过自己的努力一步步走到今天。',
+      ancient: '名门之后，家族没落后独自闯荡江湖。',
+      scifi: '在空间站长大，从未踏足过地球。',
+      fantasy: '被遗弃在森林边缘，由一位隐居的魔法师抚养长大。'
+    };
+
+    const p = personalities[role] || personalities.protagonist;
+    const s = skills[genre] || skills.modern;
+
+    let char = `👤 角色档案：${name}\n`;
+    char += `${'═'.repeat(35)}\n\n`;
+    char += `📌 基本信息\n`;
+    char += `─────────────────────\n`;
+    char += `姓名：${name}\n`;
+    char += `年龄：${age} 岁\n`;
+    char += `定位：${roleNames[role]}\n`;
+    char += `世界观：${genreNames[genre]}\n\n`;
+
+    char += `🎭 性格特征\n`;
+    char += `─────────────────────\n`;
+    p.forEach(trait => { char += `• ${trait}\n`; });
+    char += `\n`;
+
+    char += `⚡ 核心技能\n`;
+    char += `─────────────────────\n`;
+    s.forEach(skill => { char += `• ${skill}\n`; });
+    char += `\n`;
+
+    char += `📖 背景故事\n`;
+    char += `─────────────────────\n`;
+    char += `${backgrounds[genre]}\n\n`;
+
+    if (desc) {
+      char += `💡 补充设定\n`;
+      char += `─────────────────────\n`;
+      char += `${desc}\n\n`;
+    }
+
+    char += `🎨 外貌描述（可用于 AI 生图 Prompt）\n`;
+    char += `─────────────────────\n`;
+    char += `${genre === 'ancient' ? '身着古装，气质飘逸' : genre === 'scifi' ? '穿着未来风格的制服，科技感十足' : genre === 'fantasy' ? '身披斗篷，手持法杖' : '穿着简约休闲装，气质沉稳'}，`;
+    char += `${age}岁左右，眼神坚定而温暖。\n`;
+
+    output.textContent = char;
+    actions.style.display = 'flex';
+  }, 1500);
+}
+
+function copyCharOutput() {
+  const content = document.getElementById('charOutput').textContent;
+  navigator.clipboard.writeText(content).then(() => alert('角色档案已复制！'));
+}
+
+function downloadCharOutput() {
+  const content = document.getElementById('charOutput').textContent;
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'AI角色档案.txt';
+  a.click();
+}
+
+// ===== 分镜脚本生成 =====
+function generateStoryboard() {
+  const input = document.getElementById('storyboardInput').value;
+  const output = document.getElementById('storyboardOutput');
+
+  if (!input.trim()) {
+    alert('请输入场景描述');
+    return;
+  }
+
+  output.innerHTML = '<div class="storyboard-placeholder"><p>🤖 AI 正在生成分镜...</p></div>';
+
+  setTimeout(() => {
+    const shots = [
+      { number: 1, type: '全景', icon: '🏞️', desc: '建立场景环境，展示整体空间和氛围', duration: '3-5秒', movement: '固定机位' },
+      { number: 2, type: '中景', icon: '🧑', desc: '展示角色与环境的关系，建立人物位置', duration: '4-6秒', movement: '缓慢推进' },
+      { number: 3, type: '近景', icon: '👤', desc: '聚焦角色上半身，展示动作和表情', duration: '3-4秒', movement: '跟随拍摄' },
+      { number: 4, type: '特写', icon: '👁️', desc: '强调关键细节或情感，增强戏剧张力', duration: '2-3秒', movement: '固定机位' },
+      { number: 5, type: '过肩', icon: '🔄', desc: '对话场景常用，展示角色互动关系', duration: '4-5秒', movement: '正反打' },
+    ];
+
+    let html = '';
+    shots.forEach(shot => {
+      html += `
+        <div class="storyboard-card">
+          <div class="storyboard-header">
+            <span class="shot-number">镜头 ${shot.number}</span>
+            <span class="shot-type">${shot.type}</span>
+          </div>
+          <div class="storyboard-visual">${shot.icon}</div>
+          <div class="storyboard-desc">${shot.desc}</div>
+          <div class="storyboard-meta">
+            <span>⏱️ ${shot.duration}</span>
+            <span>📹 ${shot.movement}</span>
+          </div>
+        </div>
+      `;
+    });
+
+    output.innerHTML = html;
+  }, 1500);
+}
+
 // ===== 平滑滚动 =====
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
