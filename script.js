@@ -240,12 +240,39 @@ function getGenreName(genre) {
   return names[genre] || genre;
 }
 
+// ===== 复制到剪贴板（通用）=====
+function copyToClipboard(text, successMsg) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      alert(successMsg);
+    }).catch(() => {
+      fallbackCopy(text, successMsg);
+    });
+  } else {
+    fallbackCopy(text, successMsg);
+  }
+}
+
+function fallbackCopy(text, successMsg) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    document.execCommand('copy');
+    alert(successMsg);
+  } catch (e) {
+    alert('复制失败，请手动复制');
+  }
+  document.body.removeChild(textarea);
+}
+
 // ===== 复制剧本 =====
 function copyScript() {
   const content = document.getElementById('outputContent').textContent;
-  navigator.clipboard.writeText(content).then(() => {
-    alert('剧本已复制到剪贴板！');
-  });
+  copyToClipboard(content, '剧本已复制到剪贴板！');
 }
 
 // ===== 下载剧本 =====
@@ -349,7 +376,7 @@ function generateCharacter() {
 
 function copyCharOutput() {
   const content = document.getElementById('charOutput').textContent;
-  navigator.clipboard.writeText(content).then(() => alert('角色档案已复制！'));
+  copyToClipboard(content, '角色档案已复制！');
 }
 
 function downloadCharOutput() {
@@ -402,6 +429,29 @@ function generateStoryboard() {
 
     output.innerHTML = html;
   }, 1500);
+}
+
+// ===== 移动端导航 =====
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+
+if (navToggle && navLinks) {
+  navToggle.addEventListener('click', () => {
+    navToggle.classList.toggle('active');
+    navLinks.classList.toggle('active');
+    const expanded = navToggle.getAttribute('aria-expanded') === 'true';
+    navToggle.setAttribute('aria-expanded', String(!expanded));
+    navToggle.setAttribute('aria-label', expanded ? '打开菜单' : '关闭菜单');
+  });
+
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navToggle.classList.remove('active');
+      navLinks.classList.remove('active');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.setAttribute('aria-label', '打开菜单');
+    });
+  });
 }
 
 // ===== 平滑滚动 =====
